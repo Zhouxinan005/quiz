@@ -169,11 +169,11 @@ layout: false
                 const isCorrect = quiz.correctAnswer === answerElement.innerText;
                 const resultElement = document.getElementById("result");
                 if (isCorrect) {
-                    resultElement.innerText = "正确的。 答案是: " + quiz.correctAnswer;
+                    resultElement.innerText = "正确的。 答案是: " + quiz.correctAnswer + nextQuiz.analysis;
                     resultElement.style.color = "green";
                 } else {
                     resultElement.innerText =
-                        "错误的！ 正确答案是: " + quiz.correctAnswer;
+                        "错误的！ 正确答案是: " + quiz.correctAnswer + nextQuiz.analysis;
                     resultElement.style.color = "red";
                 }
             });
