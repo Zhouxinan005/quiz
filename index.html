@@ -1,0 +1,139 @@
+<!-- quiz.html-->
+<!DOCTYPE html>
+<html>
+​
+<head>
+    <meta charset="utf-8" />
+    <title>接受洗礼吧！</title>
+    <link rel="stylesheet" type="text/css" href="quiz.css">
+</head>
+​
+<body>
+    <div class="QuizTable">
+        <h1>单选题</h1>
+        <div id="quiz" class="quiz">
+            <!-- <p>What is the capital of France?</p>
+          <ul>
+            <li>Paris</li>
+            <li>London</li>
+            <li>Madrid</li>
+            <li>Rome</li>
+          </ul> -->
+        </div>
+        <p id="result" class="result"></p>
+        <button id="quit" type="button">Quit</button>
+        <button id="next" type="button">Next</button>
+    </div>
+​
+    <script type="text/javascript">
+        //设置题目布局
+        // const body=document.getElementsByName("body");
+        // const width=body.width;
+        // const height=body.height;
+        // const QuizTable=document.getElementById("QuizTable");
+        // QuizTable.style.left=width/2;
+        // QuizTable.style.top=height/2;
+​
+        // 获取题库数组
+        const quizData = [
+            {
+                "question": "( )标志着毛泽东思想的初步形成.",
+                "answers": [
+                    "A.提出并阐述农村包围城市,武装夺取政权思想",
+                    "B.《井冈山的斗争》",
+                    "C.《星星之火,可以燎原》",
+                    "D.《反对本本主义》"
+                ],
+                "correctAnswer": "A.提出并阐述农村包围城市,武装夺取政权思想"
+            },
+            //其他题目
+        ];
+​
+        // 从题库中随机抽取一道题目
+        const quizIndex = Math.floor(Math.random() * quizData.length);
+        const quiz = quizData[quizIndex];
+        console.log(quizIndex);
+        // 显示题目和选项
+        const quizElement = document.getElementById("quiz");
+        quizElement.innerHTML = `
+          <p>${quiz.question}</p>
+          <ul>
+            ${quiz.answers
+                .map(
+                    (answer) => `<li>${answer}</li>`
+                )
+                .join("")}
+          </ul>
+        `;
+​
+        // 监听答案点击事件
+        const answerElements = quizElement.querySelectorAll("li");
+        for (let i = 0; i < answerElements.length; i++) {
+            const answerElement = answerElements[i];
+            answerElement.addEventListener("click", () => {
+                // 检查答案是否正确
+                const isCorrect = quiz.correctAnswer === answerElement.innerText;
+                const resultElement = document.getElementById("result");
+                if (isCorrect) {
+                    resultElement.innerText = "正确的。 答案是: " + quiz.correctAnswer;
+                    resultElement.style.color = "green";
+                } else {
+                    resultElement.innerText =
+                        "错误的！ 正确答案是: " + quiz.correctAnswer;
+                    resultElement.style.color = "red";
+                }
+            });
+        }
+​
+        // 监听“下一题”按钮点击事件
+​
+        const nextButton = document.getElementById("next");
+        nextButton.addEventListener("click", () => {
+            // 随机抽取下一道题目
+            const nextQuizIndex = Math.floor(Math.random() * quizData.length);
+            const nextQuiz = quizData[nextQuizIndex];
+            console.log(nextQuizIndex);
+            // 显示题目和选项
+            const quizElement = document.getElementById("quiz");
+            quizElement.innerHTML = `
+        <p>${nextQuiz.question}</p>
+        <ul>
+          ${nextQuiz.answers
+                    .map(
+                        (answer) => `<li>${answer}</li>`
+                    )
+                    .join("")}
+        </ul>
+      `;
+​
+            const answerElements = quizElement.querySelectorAll("li");
+            for (let i = 0; i < answerElements.length; i++) {
+                const answerElement = answerElements[i];
+                answerElement.addEventListener("click", () => {
+                    // 检查答案是否正确
+                    const isCorrect = nextQuiz.correctAnswer === answerElement.innerText;
+                    const resultElement = document.getElementById("result");
+                    if (isCorrect) {
+                        resultElement.innerText = "正确的。 答案是: " + nextQuiz.correctAnswer;
+                        resultElement.style.color = "green";
+                    } else {
+                        resultElement.innerText =
+                            "错误的！ 正确答案是: " + nextQuiz.correctAnswer;
+                        resultElement.style.color = "red";
+                    }
+                });
+            }
+​
+            // 清空答题结果
+            const resultElement = document.getElementById("result");
+            resultElement.innerText = "";
+        });
+​
+        // 监听“退出”按钮点击事件
+        const quitButton = document.getElementById("quit");
+        quitButton.addEventListener("click", () => {
+            // 退出程序
+            window.close();
+        });
+    </script>
+</body>
