@@ -1,0 +1,85 @@
+<!-- turnJson.html -->
+<!DOCTYPE html>
+<html lang="en">
+​
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>turnJson</title>
+</head>
+​
+<body>
+    <input type="file" id="file-input">
+    <script>
+        // 定义题库数组
+        const quizData = [];
+​
+        // 读取题库文件
+        const fileInput = document.getElementById("file-input");
+        fileInput.addEventListener("change", () => {
+            // 获取题库文件
+            const file = fileInput.files[0];
+​
+            // 创建文件阅读器
+            const reader = new FileReader();
+​
+            // 监听文件阅读完成事件
+            reader.addEventListener("load", () => {
+                // 获取文件内容
+                const txt = reader.result;
+​
+                // 按行分割文本
+                const lines = txt.split("\r\n");
+​
+                // 遍历每一行文本
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+​
+                    // 如果当前行不为空，则将其作为一道题目
+                    if (line.trim() !== "") {
+                        // 解析题目内容
+                        const question = line;
+​
+                        // 读取四个答案
+                        const answers = [];
+                        for (let j = 0; j < 4; j++) {
+                            const answerLine = lines[i + j + 1];
+                            answers.push(answerLine);
+                        }
+                        i += 5;
+                       // 解析题目答案
+                       const correctAnswer = lines[i];
+                        // 读取下一行，如果下一行为空行，则说明当前题目已经读取完成
+                        const nextLine = lines[i + 1];
+                        if (nextLine === "") {
+                            i++;
+                        }
+​
+                        
+                        // 将题目添加到题库数组
+                        quizData.push({
+                            question,
+                            answers,
+                            correctAnswer,
+                        });
+                    }
+                }
+​
+                // 将题库数组转换为 json 字符串
+                const json = JSON.stringify(quizData);
+​
+                // 将 json 字符串保存为文件
+                const a = document.createElement("a");
+                const blob = new Blob([json], { type: "text/json" });
+                a.href = URL.createObjectURL(blob);
+                a.download = "quiz.json";
+                a.click();
+            });
+​
+            // 读取文件内容
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+</html>
